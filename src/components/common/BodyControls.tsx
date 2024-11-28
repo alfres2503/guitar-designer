@@ -1,7 +1,26 @@
 import { useGuitarBodyContext } from "../../hooks/useGuitarBody";
 
+const ControlGroup = ({ children, label }) => (
+  <div className="mb-4 p-3 bg-zinc-800 rounded-lg">
+    <h4 className="text-sm font-medium text-zinc-400 mb-2">{label}</h4>
+    {children}
+  </div>
+);
+
+const Button = ({ onClick, children, active = false }) => (
+  <button
+    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+      active
+        ? "bg-blue-600 text-white"
+        : "bg-zinc-700 text-zinc-300 hover:bg-zinc-600"
+    }`}
+    onClick={onClick}
+  >
+    {children}
+  </button>
+);
+
 const BodyControls = () => {
-  // Variables
   const {
     color,
     burst,
@@ -12,10 +31,6 @@ const BodyControls = () => {
     pickguardColor,
     hasBinding,
     bindingColor,
-  } = useGuitarBodyContext();
-
-  // Functions
-  const {
     handleChangeColor,
     handleChangeTexture,
     handleChangeBodyPaintOpacity,
@@ -28,94 +43,90 @@ const BodyControls = () => {
   } = useGuitarBodyContext();
 
   return (
-    <section className="flex flex-col ">
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Body Color:</label>
-        <input type="color" value={color} onChange={handleChangeColor} />
-      </div>
+    <div className="space-y-4">
+      <ControlGroup label="Body Paint">
+        <div className="flex items-center gap-3 mb-3">
+          <label className="text-sm">Color:</label>
+          <input
+            type="color"
+            value={color}
+            onChange={handleChangeColor}
+            className="w-16 h-8 rounded cursor-pointer"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm block">Opacity:</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={bodyPaintOpacity}
+            onChange={handleChangeBodyPaintOpacity}
+            className="w-full accent-blue-500"
+          />
+        </div>
+      </ControlGroup>
 
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Body Paint Opacity:</label>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={bodyPaintOpacity}
-          onChange={handleChangeBodyPaintOpacity}
-        />
-      </div>
-
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Body Texture:</label>
+      <ControlGroup label="Wood Texture">
         <select
           value={texture}
           onChange={handleChangeTexture}
-          className="
-          p-2
-          bg-white
-          text-black
-          border
-          border-black
-          rounded
-        "
+          className="w-full bg-zinc-700 text-white border border-zinc-600 rounded p-2 text-sm"
         >
           <option value="alder">Alder</option>
           <option value="flamedMaple">Flamed Maple</option>
         </select>
-      </div>
+      </ControlGroup>
 
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Burst:</label>
-        <button
-          className="p-1 bg-blue-800 text-white rounded"
-          onClick={handleToggleBurst}
-        >
-          {burst ? "Remove Burst" : "Apply Burst"}
-        </button>
-        {burst && (
-          <input
-            type="color"
-            value={burstColor}
-            onChange={handleChangeBurstColor}
-          />
-        )}
-      </div>
+      <ControlGroup label="Burst Effect">
+        <div className="flex items-center gap-3">
+          <Button onClick={handleToggleBurst} active={burst}>
+            {burst ? "Remove Burst" : "Apply Burst"}
+          </Button>
+          {burst && (
+            <input
+              type="color"
+              value={burstColor}
+              onChange={handleChangeBurstColor}
+              className="w-16 h-8 rounded cursor-pointer"
+            />
+          )}
+        </div>
+      </ControlGroup>
 
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Pickguard:</label>
-        <button
-          className="p-1 bg-blue-800 text-white rounded"
-          onClick={handleTogglePickguard}
-        >
-          {hasPickguard ? "Remove Pickguard" : "Apply Pickguard"}
-        </button>
-        {hasPickguard && (
-          <input
-            type="color"
-            value={pickguardColor}
-            onChange={handleChangePickguardColor}
-          />
-        )}
-      </div>
+      <ControlGroup label="Pickguard">
+        <div className="flex items-center gap-3">
+          <Button onClick={handleTogglePickguard} active={hasPickguard}>
+            {hasPickguard ? "Remove Pickguard" : "Add Pickguard"}
+          </Button>
+          {hasPickguard && (
+            <input
+              type="color"
+              value={pickguardColor}
+              onChange={handleChangePickguardColor}
+              className="w-16 h-8 rounded cursor-pointer"
+            />
+          )}
+        </div>
+      </ControlGroup>
 
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Binding:</label>
-        <button
-          className="p-1 bg-blue-800 text-white rounded"
-          onClick={handleToggleBinding}
-        >
-          {hasBinding ? "Remove Binding" : "Apply Binding"}
-        </button>
-        {hasBinding && (
-          <input
-            type="color"
-            value={bindingColor}
-            onChange={handleChangeBindingColor}
-          />
-        )}
-      </div>
-    </section>
+      <ControlGroup label="Binding">
+        <div className="flex items-center gap-3">
+          <Button onClick={handleToggleBinding} active={hasBinding}>
+            {hasBinding ? "Remove Binding" : "Add Binding"}
+          </Button>
+          {hasBinding && (
+            <input
+              type="color"
+              value={bindingColor}
+              onChange={handleChangeBindingColor}
+              className="w-16 h-8 rounded cursor-pointer"
+            />
+          )}
+        </div>
+      </ControlGroup>
+    </div>
   );
 };
 

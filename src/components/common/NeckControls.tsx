@@ -1,85 +1,91 @@
 import { useGuitarNeckContext } from "../../hooks/useGuitarNeck";
 
+const ControlGroup = ({ children, label }) => (
+  <div className="mb-4 p-3 bg-zinc-800 rounded-lg">
+    <h4 className="text-sm font-medium text-zinc-400 mb-2">{label}</h4>
+    {children}
+  </div>
+);
+
+const Button = ({ onClick, children, active = false }) => (
+  <button
+    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+      active
+        ? "bg-blue-600 text-white"
+        : "bg-zinc-700 text-zinc-300 hover:bg-zinc-600"
+    }`}
+    onClick={onClick}
+  >
+    {children}
+  </button>
+);
+
 const NeckControls = () => {
   const {
     fretboardWood,
-    handleChangeFretboardWood,
     inlaysColor,
-    handleChangeInlaysColor,
     nutColor,
-    handleChangeNutColor,
     hasNeckBinding,
     neckBindingColor,
+    handleChangeFretboardWood,
+    handleChangeInlaysColor,
+    handleChangeNutColor,
     handleToggleNeckBinding,
     handleChangeNeckBindingColor,
   } = useGuitarNeckContext();
 
   return (
-    <section className="flex flex-col ">
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Fretboard Wood:</label>
+    <div className="space-y-4">
+      <ControlGroup label="Fretboard">
         <select
           value={fretboardWood}
           onChange={handleChangeFretboardWood}
-          className="
-          p-2
-          bg-white
-          text-black
-          border
-          border-black
-          rounded
-        "
+          className="w-full bg-zinc-700 text-white border border-zinc-600 rounded p-2 text-sm"
         >
           <option value="rosewood">Rosewood</option>
           <option value="maple">Maple</option>
         </select>
-      </div>
+      </ControlGroup>
 
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Inlays Color:</label>
-        <input
-          type="color"
-          value={inlaysColor}
-          onChange={handleChangeInlaysColor}
-        />
-      </div>
+      <ControlGroup label="Inlays">
+        <div className="flex items-center gap-3">
+          <label className="text-sm">Color:</label>
+          <input
+            type="color"
+            value={inlaysColor}
+            onChange={handleChangeInlaysColor}
+            className="w-16 h-8 rounded cursor-pointer"
+          />
+        </div>
+      </ControlGroup>
 
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Nut Color:</label>
+      <ControlGroup label="Nut">
         <select
           value={nutColor}
           onChange={handleChangeNutColor}
-          className="
-          p-2
-          bg-white
-          text-black
-          border
-          border-black
-          rounded
-        "
+          className="w-full bg-zinc-700 text-white border border-zinc-600 rounded p-2 text-sm"
         >
           <option value="white">White</option>
           <option value="black">Black</option>
         </select>
-      </div>
+      </ControlGroup>
 
-      <div className="flex justify-start items-center gap-3 p-2">
-        <label>Neck Binding:</label>
-        <button
-          className="p-1 bg-blue-800 text-white rounded"
-          onClick={handleToggleNeckBinding}
-        >
-          {hasNeckBinding ? "Remove Binding" : "Add Binding"}
-        </button>
-        {hasNeckBinding && (
-          <input
-            type="color"
-            value={neckBindingColor}
-            onChange={handleChangeNeckBindingColor}
-          />
-        )}
-      </div>
-    </section>
+      <ControlGroup label="Neck Binding">
+        <div className="flex items-center gap-3">
+          <Button onClick={handleToggleNeckBinding} active={hasNeckBinding}>
+            {hasNeckBinding ? "Remove Binding" : "Add Binding"}
+          </Button>
+          {hasNeckBinding && (
+            <input
+              type="color"
+              value={neckBindingColor}
+              onChange={handleChangeNeckBindingColor}
+              className="w-16 h-8 rounded cursor-pointer"
+            />
+          )}
+        </div>
+      </ControlGroup>
+    </div>
   );
 };
 

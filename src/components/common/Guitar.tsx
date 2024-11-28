@@ -1,7 +1,7 @@
 import { useGuitarBodyContext } from "../../hooks/useGuitarBody";
 import { useGuitarNeckContext } from "../../hooks/useGuitarNeck";
 import Bursts from "./BurstCodes.json";
-import Patterns from "./Patterns";
+import { Patterns } from ".";
 
 const Guitar = () => {
   const {
